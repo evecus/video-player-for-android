@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background rounded square with gradient -->
+    <path
+        android:pathData="M14,0 L94,0 Q108,0 108,14 L108,94 Q108,108 94,108 L14,108 Q0,108 0,94 L0,14 Q0,0 14,0 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0"
+                android:startY="0"
+                android:endX="108"
+                android:endY="108">
+                <item android:offset="0" android:color="#3ECFAA" />
+                <item android:offset="1" android:color="#52D98C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Decorative swirl / ribbon left -->
+    <path
+        android:pathData="M22,72 Q18,50 28,36 Q34,28 42,26 Q36,38 38,52 Q40,62 34,70 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.25" />
+
+    <!-- Play triangle - main element, white -->
+    <path
+        android:pathData="M42,34 L78,54 L42,74 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.95" />
+
+    <!-- Decorative tail / swirl right -->
+    <path
+        android:pathData="M70,78 Q82,74 86,62 Q88,52 82,44 Q90,52 88,66 Q86,76 76,82 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.20" />
+
+    <!-- Small sparkle dot top-left -->
+    <path
+        android:pathData="M28,26 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.50" />
+
+    <!-- Small sparkle dot bottom-right -->
+    <path
+        android:pathData="M82,82 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.40" />
+
+</vector>
