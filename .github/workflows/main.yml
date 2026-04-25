@@ -1,0 +1,91 @@
+name: Build & Release arm64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build arm64 Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ─────────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── JDK ──────────────────────────────────────────────────────────────
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # ── Download gradle-wrapper.jar (not committed to repo) ───────────────
+      - name: Download Gradle wrapper jar
+        run: |
+          mkdir -p gradle/wrapper
+          curl -sL \
+            "https://github.com/gradle/gradle/raw/v8.11.1/gradle/wrapper/gradle-wrapper.jar" \
+            -o gradle/wrapper/gradle-wrapper.jar
+          chmod +x gradlew
+
+      # ── Gradle cache ──────────────────────────────────────────────────────
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      # ── Generate tag from current UTC time ────────────────────────────────
+      - name: Generate release tag
+        id: tag
+        run: |
+          TAG=$(date -u '+%Y.%m.%d-%H%M')
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          echo "Release tag: $TAG"
+
+      # ── Decode keystore ───────────────────────────────────────────────────
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > $GITHUB_WORKSPACE/keystore.jks
+
+      # ── Build release APK (arm64-v8a only) ───────────────────────────────
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+        env:
+          KEYSTORE_FILE:     ${{ github.workspace }}/keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS:         ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:      ${{ secrets.KEY_PASSWORD }}
+
+      # ── Locate & rename APK ───────────────────────────────────────────────
+      - name: Rename APK
+        id: apk
+        run: |
+          APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+          NAME="映画-${{ steps.tag.outputs.TAG }}-arm64.apk"
+          cp "$APK" "$NAME"
+          echo "APK_PATH=$NAME" >> $GITHUB_OUTPUT
+
+      # ── Create GitHub Release & upload APK ───────────────────────────────
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name:   ${{ steps.tag.outputs.TAG }}
+          name:       "映画 ${{ steps.tag.outputs.TAG }}"
+          body: |
+            ## 映画 ${{ steps.tag.outputs.TAG }}
+
+            ### 架构
+            - `arm64-v8a`
+
+            ### 系统要求
+            - Android 8.0（API 26）及以上
+          draft:      false
+          prerelease: false
+          files:      ${{ steps.apk.outputs.APK_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
