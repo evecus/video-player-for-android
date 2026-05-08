@@ -2,6 +2,11 @@ name: Build & Release arm64
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
 
 jobs:
   build:
@@ -39,14 +44,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      # ── Generate tag from current UTC time ────────────────────────────────
-      - name: Generate release tag
-        id: tag
-        run: |
-          TAG=$(date -u '+%Y.%m.%d-%H%M')
-          echo "TAG=$TAG" >> $GITHUB_OUTPUT
-          echo "Release tag: $TAG"
-
       # ── Decode keystore ───────────────────────────────────────────────────
       - name: Decode keystore
         run: |
@@ -66,7 +63,7 @@ jobs:
         id: apk
         run: |
           APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
-          NAME="映画-${{ steps.tag.outputs.TAG }}-arm64.apk"
+          NAME="映画-v${{ github.event.inputs.tag }}-arm64.apk"
           cp "$APK" "$NAME"
           echo "APK_PATH=$NAME" >> $GITHUB_OUTPUT
 
@@ -74,10 +71,10 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name:   ${{ steps.tag.outputs.TAG }}
-          name:       "映画 ${{ steps.tag.outputs.TAG }}"
+          tag_name:   v${{ github.event.inputs.tag }}
+          name:       "映画 v${{ github.event.inputs.tag }}"
           body: |
-            ## 映画 ${{ steps.tag.outputs.TAG }}
+            ## 映画 v${{ github.event.inputs.tag }}
 
             ### 架构
             - `arm64-v8a`
