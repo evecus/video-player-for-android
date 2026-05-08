@@ -342,8 +342,33 @@ private fun PlayerControls(
                 colors = SliderDefaults.colors(
                     thumbColor = GreenPrimary,
                     activeTrackColor = GreenPrimary,
-                    inactiveTrackColor = Color.White.copy(0.3f),
+                    inactiveTrackColor = Color.White.copy(0.25f),
                 ),
+                thumb = {
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .background(GreenPrimary, CircleShape)
+                    )
+                },
+                track = { sliderState ->
+                    val fraction = if (sliderState.valueRange.endInclusive - sliderState.valueRange.start > 0)
+                        (sliderState.value - sliderState.valueRange.start) / (sliderState.valueRange.endInclusive - sliderState.valueRange.start)
+                    else 0f
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(2.dp)
+                            .background(Color.White.copy(0.25f), RoundedCornerShape(1.dp))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(fraction)
+                                .height(2.dp)
+                                .background(GreenPrimary, RoundedCornerShape(1.dp))
+                        )
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
 
