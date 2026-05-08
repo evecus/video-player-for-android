@@ -321,7 +321,7 @@ private fun DeleteDialog(fileName: String, onConfirm: () -> Unit, onDismiss: () 
         onDismissRequest = onDismiss,
         icon = { Icon(Icons.Outlined.Warning, contentDescription = null, tint = ErrorRed) },
         title = { Text("确认删除") },
-        text = { Text("确定要删除 "$fileName" 吗？删除后无法恢复。") },
+        text = { Text("确定要删除「$fileName」吗？删除后无法恢复。") },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text("删除", color = ErrorRed, fontWeight = FontWeight.SemiBold)
