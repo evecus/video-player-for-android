@@ -6,8 +6,6 @@
         <item name="postSplashScreenTheme">@style/Theme.YingHua.NoActionBar</item>
     </style>
 
-    <style name="Theme.YingHua.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="Theme.YingHua.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
 </resources>
