@@ -270,7 +270,7 @@ private fun VideoOptionsSheet(
                 Triple(Icons.Outlined.DriveFileRenameOutline, "重命名", onRename),
                 Triple(Icons.Outlined.Share, "分享", onShare),
                 Triple(Icons.Outlined.FileCopy, "复制到…", onCopy),
-                Triple(Icons.Outlined.DriveFileMoveOutline, "移动到…", onMove),
+                Triple(Icons.Outlined.DriveFileMove, "移动到…", onMove),
                 Triple(Icons.Outlined.DeleteOutline, "删除", onDelete),
             ).forEach { (icon, label, action) ->
                 ListItem(

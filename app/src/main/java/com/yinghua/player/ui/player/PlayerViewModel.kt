@@ -98,7 +98,7 @@ class PlayerViewModel @Inject constructor(
             videoPath.startsWith("rtmp") || videoPath.startsWith("mms")) {
             Media(libVlc, Uri.parse(videoPath))
         } else {
-            Media(libVlc, File(videoPath).toURI())
+            Media(libVlc, Uri.parse(android.net.Uri.fromFile(java.io.File(videoPath)).toString()))
         }
         val title = videoPath.substringAfterLast("/")
         _state.update { it.copy(title = title) }
@@ -228,7 +228,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun addSubtitleFile(uri: Uri) {
-        mediaPlayer?.addSlave(Media.Slave.Type.Subtitle, uri, true)
+        mediaPlayer?.addSlave(org.videolan.libvlc.interfaces.IMedia.Slave.Type.Subtitle, uri, true)
     }
 
     fun attachVout(vout: IVLCVout) {

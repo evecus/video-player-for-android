@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.yinghua.player.ui.theme.*
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -199,7 +201,7 @@ fun NetworkScreen(
 }
 
 private fun androidx.compose.ui.Modifier.clickable(onClick: () -> Unit) = this.then(
-    Modifier.pointerInput(Unit = onClick) {
-        androidx.compose.foundation.gestures.detectTapGestures { onClick() }
+    Modifier.pointerInput(onClick) {
+        detectTapGestures { onClick() }
     }
 )

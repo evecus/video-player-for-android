@@ -117,7 +117,7 @@ fun SearchScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            Icons.Outlined.VideoOff,
+                            Icons.Outlined.VideocamOff,
                             null,
                             tint = TextHint,
                             modifier = Modifier.size(64.dp),
